@@ -43,6 +43,6 @@ module.exports = {
       hash: true,
       template: './src/index.ejs'
     }),
-    // new FaviconsWebpackPlugin('./src/icons/logo.png')
+    new FaviconsWebpackPlugin('./src/icons/logo.png')
   ]
 }
