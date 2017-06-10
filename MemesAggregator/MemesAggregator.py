@@ -1,3 +1,4 @@
+import json
 import os
 import urllib.request
 
@@ -5,7 +6,7 @@ import vk
 
 ID_MEMES_GROUP = '-92879038'
 IMG_NAME = 'img.jpg'
-DATA_NAME = 'info'
+INFO_NAME = 'info.json'
 DEFAULT_SAVE_PATH = 'MemesAggregator/data/'
 
 
@@ -16,17 +17,33 @@ def get_group_posts(vk_api, id):
 
 
 def save_post_to_db(post, group_id):
-    post_id = str(post['id'])
-    save_path = DEFAULT_SAVE_PATH + group_id
-    photo_save_path = save_path + '/' + post_id + '/'
+    # Create dir for group posts if not exist
+    group_path = DEFAULT_SAVE_PATH + group_id
+    if not os.path.exists(group_path):
+        os.makedirs(group_path)
 
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
-    if not os.path.exists(photo_save_path):
-        os.makedirs(photo_save_path)
+    # Create dir for post if not exist
+    post_path = group_path + '/' + str(post['id']) + '/'
+    if not os.path.exists(post_path):
+        os.makedirs(post_path)
 
-    photo_url = post['attachments'][0]['photo']['src']
-    urllib.request.urlretrieve(photo_url, photo_save_path + IMG_NAME)
+    save_img(post, post_path)
+    save_info(post, post_path)
+
+
+def save_img(post, path):
+    # Save img only if no image was saved previously
+    if not os.path.exists(path + IMG_NAME):
+        photo_url = post['attachments'][0]['photo']['src']
+        urllib.request.urlretrieve(photo_url, path + IMG_NAME)
+
+
+def save_info(post, path):
+    if not os.path.exists(path + INFO_NAME):
+        with open(path + INFO_NAME, 'w') as fp:
+            json.dump({}, fp)
+    else:
+        pass
 
 
 if __name__ == '__main__':
