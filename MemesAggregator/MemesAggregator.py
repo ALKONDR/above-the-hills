@@ -2,6 +2,7 @@ import json
 import os
 import urllib.request
 
+import time
 import vk
 
 ID_MEMES_GROUP = '-92879038'
@@ -10,9 +11,9 @@ INFO_NAME = 'info.json'
 DEFAULT_SAVE_PATH = 'MemesAggregator/data/'
 
 
-def get_group_posts(vk_api, id):
-    posts = vk_api.wall.get(owner_id=id, count=2)
-    for i in range(1, 3):
+def get_group_posts(vk_api, id, count):
+    posts = vk_api.wall.get(owner_id=id, count=count)
+    for i in range(1, count + 1):
         save_post_to_db(posts[i], id)
 
 
@@ -40,14 +41,36 @@ def save_img(post, path):
 
 def save_info(post, path):
     if not os.path.exists(path + INFO_NAME):
+        data = {}
+        likes_history = []
+
+        data['id'] = post['id']
+        data['likes_history'] = likes_history
+        add_like_info(data, post)
+
         with open(path + INFO_NAME, 'w') as fp:
-            json.dump({}, fp)
+            json.dump(data, fp)
     else:
+        with open(path + INFO_NAME) as data_file:
+            data = json.load(data_file)
+            add_like_info(data, post)
+            save_json(path + INFO_NAME, data)
         pass
+
+
+def add_like_info(data, post):
+    current_time = int(time.time())
+    like_info = {str(current_time): post['likes']['count']}
+    data['likes_history'].append(like_info)
+
+
+def save_json(file, data):
+    with open(file, 'w') as fp:
+        json.dump(data, fp)
 
 
 if __name__ == '__main__':
     id = ID_MEMES_GROUP
     session = vk.Session()
     vk_api = vk.API(session)
-    get_group_posts(vk_api, id)
+    get_group_posts(vk_api, id, 10)
