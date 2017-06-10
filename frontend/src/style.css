@@ -25,3 +25,24 @@ h1 {
 .navEl {
   margin-top: 20px;
 }
+
+.headerContainer {
+  width: calc(100% - 100px);
+  height: 50px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: grey;
+  display: flex;
+  align-items: center;
+}
+
+.projectTitle {
+  position: absolute;
+  left: 20px;
+}
+
+.login {
+  position: absolute;
+  right: 20px;
+}

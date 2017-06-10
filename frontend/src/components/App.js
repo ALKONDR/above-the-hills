@@ -1,5 +1,6 @@
 import React from 'react';
 import Nav from './presentations/Nav';
+import Header from './presentations/Header';
 
 // const Router = require('react-router-dom').BrowserRouter;
 // const Route = require('react-router-dom').Route;
@@ -10,6 +11,7 @@ class App extends React.PureComponent {
     return (
       <div className="container">
         <Nav />
+        <Header />
       </div>
     );
   }
