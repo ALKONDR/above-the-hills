@@ -46,9 +46,12 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "chart.js": "^2.6.0",
     "mobx": "^3.1.9",
     "mobx-react": "^4.1.8",
     "qs": "^6.4.0",
+    "react-chartjs-2": "^2.1.0",
+    "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1"
   }
 }
