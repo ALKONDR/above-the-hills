@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Line } from 'react-chartjs-2';
 
 class LineGraph extends React.PureComponent {
   render() {
     const data = {
-      labels: [1, 2, 3, 4, 5, 6, 7],
+      labels: [1, 2, 3, 4, 5, 6, 7], // this.props.x
       datasets: [{
         label: 'MemeGraph',
         fill: true,
@@ -24,7 +25,7 @@ class LineGraph extends React.PureComponent {
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: [65, 59, 80, 81, 56, 55, 40],
+        data: [65, 59, 80, 81, 56, 55, 40], // this.props.y
       }],
     };
 
@@ -35,5 +36,10 @@ class LineGraph extends React.PureComponent {
     );
   }
 }
+
+LineGraph.propTypes = {
+  x: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+  y: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+};
 
 module.exports = LineGraph;

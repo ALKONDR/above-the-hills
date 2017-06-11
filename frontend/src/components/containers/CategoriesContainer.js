@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Categories from '../presentations/Categories';
+import api from '../utils/api';
 
 class CategoriesContainer extends React.PureComponent {
   constructor(props) {
@@ -10,27 +11,23 @@ class CategoriesContainer extends React.PureComponent {
     this.state = {
       previews: [],
     };
+
+    this.setState = this.setState.bind(this);
   }
 
   componentWillMount() {
-    this.setState({
-      previews: [
-        {
-          category: 'vzhuh',
-          value: 100.52,
-          difference: 10.34,
-        },
-        {
-          category: 'potracheno',
-          value: 45.23,
-          difference: -4.12,
-        },
-        {
-          category: 'agutin',
-          value: 76.24,
-          difference: -34.03,
-        },
-      ],
+    api.getCategories().then((response) => {
+      if (response.status >= 200 && response.status < 300) {
+        this.setState({
+          previews: response.data.map((element) => {
+            return {
+              category: element.name,
+              value: element.price,
+              difference: 10,
+            }
+          }),
+        });
+      }
     });
   }
 

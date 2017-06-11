@@ -16,19 +16,30 @@ TEMPLATE_PATH = 'MemesAggregator/templates/'
 TEMPLATES_DICT = [TEMPLATE_PATH + "Agutin.jpg", TEMPLATE_PATH + "Finger.jpg",
                   TEMPLATE_PATH + "Leo.jpg", TEMPLATE_PATH + "Robert.jpg",
                   TEMPLATE_PATH + "SadMan.jpg", TEMPLATE_PATH + "Lyagootka.jpg", TEMPLATE_PATH + "Wowdoge.jpg"]
-GROUPS = {'-148089915'}
+GROUPS = ['-148089915', '-30277672', '-460389', '-12382740', '-31836774', '-23064236',
+          '-45441631', '-141169957', '41898081', '-92879038', '-132799222', '-104332051']
 SCAN_TIME = int(time.time())
 
 
 # **************MAIN METHODS******************
 
-def get_group_posts(vk_api, id, count):
-    posts = vk_api.wall.get(owner_id=id, count=count)
-    for i in range(1, count + 1):
-        if 'attachments' in posts[i]:
-            if 'photo' in posts[i]['attachments'][0]:
-                if 'src' in posts[i]['attachments'][0]['photo']:
-                    clusterizate(posts[i], id, POST_TEMPLATE_SAVE_PATH)
+def compar(post1, post2):
+    return post1['date'] - post2['date']
+
+
+def get_group_posts(vk_api, count):
+    posts = []
+    for id in GROUPS:
+        posts += vk_api.wall.get(owner_id=id, count=count)
+
+    posts = list(filter(lambda post: type(post) is dict, posts))
+    posts.sort(key=lambda post: post['date'])
+
+    for post in posts:
+        if 'attachments' in post:
+            if 'photo' in post['attachments'][0]:
+                if 'src' in post['attachments'][0]['photo']:
+                    clusterizate(post, id, POST_TEMPLATE_SAVE_PATH)
                     # delete_meta_info()
 
 
@@ -59,8 +70,9 @@ def delete_meta_info():
 def save_info_to_template(post, template):
     template_name = template[template.rfind('/') + 1:template.rfind('.')]
     data = get_json(template_name)
-    add_like_info(data, template_name, post)
-    pass
+    if len(data['likes_history']) == 0 or (
+                    len(data['likes_history']) > 0 and int(data['likes_history'][-1]['last_post']) <= post['date']):
+        add_like_info(data, template_name, post)
 
 
 # **************HELP METHODS******************
@@ -105,8 +117,13 @@ def save_img(post, path):
 
 
 def add_like_info(data, template_name, post):
-    like_info = {str(SCAN_TIME): post['likes']['count']}
-    data['likes_history'].append(like_info)
+    current_time = str(SCAN_TIME)
+
+    like_info = {current_time: post['likes']['count'], 'last_post': str(post['date'])}
+    if len(data['likes_history']) > 0 and list(data['likes_history'][-1].keys())[0] == current_time:
+        data['likes_history'][-1][current_time] += like_info[current_time]
+    else:
+        data['likes_history'].append(like_info)
     save_json(POST_TEMPLATE_SAVE_PATH + template_name + '.json', data)
 
 
@@ -133,5 +150,4 @@ def get_json(name):
 if __name__ == '__main__':
     session = vk.Session()
     vk_api = vk.API(session)
-    for id in GROUPS:
-        get_group_posts(vk_api, id, 6)
+    get_group_posts(vk_api, 10)
