@@ -58,6 +58,7 @@ CREATE TABLE meme_category (
 	id INT AUTO_INCREMENT,
 	name CHAR(255),
 	price DOUBLE PRECISION,
+	popularity DOUBLE PRECISION,
 	PRIMARY KEY(id)
 );
 
@@ -98,10 +99,12 @@ CREATE TABLE transactions (
 );
 
 
-
-
-
-
-
+INSERT INTO meme_category (name) VALUES
+('Finger'),
+('Leo'),
+('Robert'),
+('SadMan'),
+('Superbrain'),
+('Vzuh')
 
 
