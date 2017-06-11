@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LineGraph from './LineGraph';
 import Title from '../presentations/Title';
+import SharesController from './SharesController';
 
 class CategoryShares extends React.PureComponent {
   render() {
@@ -13,6 +14,7 @@ class CategoryShares extends React.PureComponent {
           </Title>
         </div>
         <LineGraph />
+        <SharesController />
       </div>
     );
   }
