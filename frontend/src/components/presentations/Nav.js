@@ -13,7 +13,7 @@ class Nav extends React.PureComponent {
     };
 
     return (
-      <div className="navContainer">
+      <div className="navContainer nav-wrapper">
         <ul className="nav">
           {Object.keys(navElements).map(element => (
             <li key={element} className="navEl">

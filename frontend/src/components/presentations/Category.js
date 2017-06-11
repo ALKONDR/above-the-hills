@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 class Category extends React.PureComponent {
   render() {
     return (
-      <div className="previewContainer">
+      <div className="previewContainer card-panel">
         <Link to={`/categories/${this.props.category}`}>
           <h3 className="categoryName">
             {this.props.category}
