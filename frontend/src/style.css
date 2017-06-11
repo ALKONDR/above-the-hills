@@ -9,12 +9,24 @@ body {
 }
 
 h1 { 
-  font-size: 40px;
-  color: red;
+  font-size: 20px;
+  color: green;
+}
+
+h2 { 
+  font-size: 20px;
+  color: green;
+}
+
+.container{
+  margin-left: 100px;
+  margin-top: 50px;
 }
 
 .navContainer {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100px;
   height: 100%;
   background: blue;
@@ -37,9 +49,8 @@ h1 {
   position: fixed;
   top: 0;
   right: 0;
-  background: grey;
   display: flex;
-  align-items: center;
+  background: red;
 }
 
 .projectTitle {
@@ -53,27 +64,13 @@ h1 {
 }
 
 .categoriesContainer {
-  left: 100px;
-  top: 50px;
-  position: absolute;
-  width: calc(100% - 100px);
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
 }
 
 .previewContainer {
-  background: grey;
-  border-radius: 10px;
-  height: 40px;
-  width: 41%;
-  margin-left: 6%;
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  padding-left: 10px;
-  padding-right: 10px;
+  
 }
 
 .previewNumbers {
@@ -86,9 +83,30 @@ h1 {
 }
 
 .linegraph {
-  position: absolute;
+  position: relative;
+
   margin-top: 100px;
   margin-left: 150px;
-  height: 600px;
   width: 60%;
+}
+
+.categorySharesContainer{
+  margin-left: 100px;
+  margin-top: 50px;
+}
+
+.paymentsContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentContainer{
+  width: calc(100% - 100px);
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

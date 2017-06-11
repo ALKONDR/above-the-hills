@@ -4,7 +4,7 @@ import Title from './Title';
 class Header extends React.PureComponent {
   render() {
     return (
-      <div className="headerContainer">
+      <div className="headerContainer nav-wrapper">
         <div className="projectTitle">
           <Title>
             Above the hill
