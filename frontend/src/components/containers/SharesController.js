@@ -16,6 +16,7 @@ class SharesController extends React.PureComponent {
     this.decrementShareValue = this.decrementShareValue.bind(this);
     this.sellShares = this.sellShares.bind(this);
     this.buyShares = this.buyShares.bind(this);
+    this.inputOnChange = this.inputOnChange.bind(this);
   }
 
   incrementShareValue(e) {
@@ -25,7 +26,7 @@ class SharesController extends React.PureComponent {
 
   decrementShareValue(e) {
     e.preventDefault();
-    PaymentStore.shareAmount += 1;
+    PaymentStore.shareAmount -= 1;
   }
 
   sellShares(e) {
@@ -36,13 +37,23 @@ class SharesController extends React.PureComponent {
     e.preventDefault();
   }
 
+  inputOnChange(e) {
+    console.log(e.target.value);
+    PaymentStore.shareAmount = parseFloat(e.target.value);
+  }
+
   render() {
     return (
       <div className="paymentsContainer">
         <Button cssClass={'changeShareValue'} listener={this.incrementShareValue}>
           +
         </Button>
-        <input type="text" className="valueInput" />
+        <input
+          type="text"
+          className="valueInput"
+          onChange={this.inputOnChange}
+          value={PaymentStore.shareAmount}
+        />
         <Button cssClass={'changeShareValue'} listener={this.decrementShareValue}>
           -
         </Button>
