@@ -11,22 +11,39 @@ app = Flask(__name__)
 def send_index():
     return send_static('index.html')
 
+@app.route('/api/users/<int:user_id>')
+def users(user_id):
+	return mysql.users(user_id)
+
+@app.route('/api/categories/')
+def all_categories():
+	print('all_categories')
+	return mysql.all_categories()
+
 @app.route('/api/categories/<string:name>')
 def categories(name):
+	print('categories: ' + name)
 	return mysql.categories(name)
 
 @app.route('/api/login/')
 def login():
 	code = request.args.get('code')
-	if auth.authorize(code):
+	ident = auth.authorize(code)
+	if ident is not None:
 		return json.dumps({
 			'code': code,
+			'id': ident,
 			'status': 'OK'
 			})
 	else:
 		return json.dumps({
 			'status' : 'Unauthorized'
 			}), 401
+
+#@app.route('/api/user/buy/<int:user_id>')
+#def buy(user_id):
+#	request.args.get('code')
+#	return mysql.buy(user_id, code)
 
 @app.route('/api/<path:path>')
 def send_rest(path):

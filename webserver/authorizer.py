@@ -19,19 +19,24 @@ connection_config = {
 cnx = mysql.connector.connect(**connection_config)
 
 def vk_recv_name(ans):
-	try:
+    try:
         url = 'https://api.vk.com/method/users.get?user_ids=' + ans['user_id'] + '&fields=bdate&v=5.65'
         resp = urllib.request.urlopen(url)
     except urllib.error.HTTPError as error:
         print("Can't get JSON, check user_id")
+        return
         
     string = resp.read().decode('utf8')
     answer = json.loads(string)
-    name = answer['response'][0]['first_name']
-    surname = answer['response'][0]['last_name']
-    print(name + ' ' + surname)
+    if 'response' in answer:
+        name = answer['response'][0]['first_name']
+        surname = answer['response'][0]['last_name']
+        print(name + ' ' + surname)
+    else:
+        name = ''
+        surname = ''
     
-    return{
+    return {
         'name': name,
         'surname': surname
     }
@@ -39,6 +44,8 @@ def vk_recv_name(ans):
 def db_register(code, ans):
 	print('db_register() call')
 	names = vk_recv_name(ans)
+	names = {'name':'Ivan', 'surname':''}
+
 	if names is None:
 		print ('db_register(): Cannot receive name from VK')
 		return False
@@ -133,10 +140,11 @@ def authorize(code):
 	try:
 		if answer is not None and answer['access_token'] is not None:
 			if db_auth_sync(code, answer):
-				return True
-			return False
+				if 'user_id' in answer:
+					return answer['user_id']
+			return None
 	except TypeError:
-		return False
+		return None
 
 
 def verify(code, id=0):
