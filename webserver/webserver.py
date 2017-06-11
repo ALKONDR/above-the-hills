@@ -13,7 +13,6 @@ def send_index():
 
 @app.route('/api/categories/<string:name>')
 def categories(name):
-	print("processing...")
 	return mysql.categories(name)
 
 @app.route('/api/login/')

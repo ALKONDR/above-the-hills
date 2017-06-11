@@ -1,3 +1,4 @@
+from datetime import datetime
 import mysql.connector.errors
 import mysql.connector
 import urllib.request
@@ -18,10 +19,22 @@ connection_config = {
 cnx = mysql.connector.connect(**connection_config)
 
 def vk_recv_name(ans):
-	return {
-		'name': 'Ivan',
-		'surname': 'Ivanov'
-	}
+	try:
+        url = 'https://api.vk.com/method/users.get?user_ids=' + ans['user_id'] + '&fields=bdate&v=5.65'
+        resp = urllib.request.urlopen(url)
+    except urllib.error.HTTPError as error:
+        print("Can't get JSON, check user_id")
+        
+    string = resp.read().decode('utf8')
+    answer = json.loads(string)
+    name = answer['response'][0]['first_name']
+    surname = answer['response'][0]['last_name']
+    print(name + ' ' + surname)
+    
+    return{
+        'name': name,
+        'surname': surname
+    }
 
 def db_register(code, ans):
 	print('db_register() call')
@@ -126,7 +139,17 @@ def authorize(code):
 		return False
 
 
-def verify(secret):
-	pass
+def verify(code, id=0):
+	cursor = cnx.cursor()
+	query = "SELECT id, token_expires FROM users WHERE secret = '" + code + "';"
 
+	cursor.execute(query)
+	for elem in cursor:
+		idx = elem[0]
+		exp = elem[1]
+		if datetime.now() < exp and (idx == id or id == 0):
+			cursor.close()
+			return True
 
+	cursor.close()
+	return False
