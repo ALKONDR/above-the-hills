@@ -1,4 +1,6 @@
+/* eslint-disable */
 import React from 'react';
+import PropTypes from 'prop-types';
 import Categories from '../presentations/Categories';
 
 class CategoriesContainer extends React.PureComponent {
@@ -33,6 +35,7 @@ class CategoriesContainer extends React.PureComponent {
   }
 
   render() {
+    console.log(this.props.location.search);
     return <Categories previews={this.state.previews} />;
   }
 }

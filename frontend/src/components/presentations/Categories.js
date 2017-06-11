@@ -6,7 +6,7 @@ class Categories extends React.PureComponent {
   render() {
     return (
       <div className="categoriesContainer">
-        {this.props.previews.map(element => <Category {...element} />)}
+        {this.props.previews.map(element => <Category key={element.category} {...element} />)}
       </div>
     );
   }

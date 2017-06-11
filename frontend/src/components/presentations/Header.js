@@ -11,9 +11,11 @@ class Header extends React.PureComponent {
           </Title>
         </div>
         <div className="login">
-          <Title>
-            Войти/Регистрация
-          </Title>
+          <a href="https://oauth.vk.com/authorize?client_id=6069231&redirect_uri=http://membrain.ru">
+            <Title>
+              Войти через vK
+            </Title>
+          </a>
         </div>
       </div>
     );
