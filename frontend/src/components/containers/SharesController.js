@@ -39,7 +39,7 @@ class SharesController extends React.PureComponent {
 
   inputOnChange(e) {
     console.log(e.target.value);
-    PaymentStore.shareAmount = parseFloat(e.target.value);
+    PaymentStore.shareAmount = e.target.value.trim() === '' ? 0 : parseFloat(e.target.value);
   }
 
   render() {
