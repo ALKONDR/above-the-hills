@@ -14,12 +14,14 @@ class App extends React.PureComponent {
       <div className="container">
         <Nav />
         <Header />
-        <Router>
-          <Switch>
-            <Route exact path="/" component={CategoriesContainer} />
-            <Route exact path="/categories/:category" component={CategoryShares} />
-          </Switch>
-        </Router>
+        <div className="contentContainer">
+          <Router>
+            <Switch>
+              <Route exact path="/" component={CategoriesContainer} />
+              <Route exact path="/categories/:category" component={CategoryShares} />
+            </Switch>
+          </Router>
+        </div>
       </div>
     );
   }
