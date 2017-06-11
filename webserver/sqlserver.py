@@ -14,8 +14,10 @@ cnx = mysql.connector.connect(**connection_config)
 
 def categories(name):
     cursor = cnx.cursor()
+    print("recv cursor")
     query = ('SELECT * FROM meme_category WHERE name = "' + str(name) + '";')
     cursor.execute(query)
+    print("executed query")
     for (id, name, price, pop) in cursor:
         cursor.close()
         cursor = cnx.cursor()
@@ -26,6 +28,7 @@ def categories(name):
          ORDER BY timestamp DESC;')
 
         cursor.execute(query)
+        print("executed query 2")
 
         i = 0
         values = []
